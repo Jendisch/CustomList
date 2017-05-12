@@ -12,6 +12,7 @@ namespace CustomListTests
         //Add Tests
 
 
+
         [TestMethod]
         public void Count_CountNumberOfObjectsInList_ReturnNumberOfItems()
         {
@@ -144,7 +145,9 @@ namespace CustomListTests
         }
 
 
+
         //Remove Tests
+
 
 
         [TestMethod]
@@ -301,11 +304,13 @@ namespace CustomListTests
         }
 
 
+
         //Override ToString Tests
 
 
+
         [TestMethod]
-        public void ToString_OverrideOriginalToString_ReturnStringWithPeriodAndSpaceAdded()
+        public void ToString_OverrideOriginalToStringUsingInt_ReturnStringWithPeriodAndSpaceAdded()
         {
             List<int> list = new List<int>() { 1, 2, 3, 4, 5 };
             //Arrange
@@ -334,8 +339,31 @@ namespace CustomListTests
             Assert.AreEqual(expected, result);
         }
 
+        [TestMethod]
+        public void ToString_OverrideOriginalToStringUsingAListOfStringLists_ReturnStringWithPeriodAndSpaceAdded()
+        {
+            // Arrange
+            List<string> list1 = new List<string>() { "I", "Love", "Putting" };
+            List<string> list2 = new List<string>() { "Periods", "Between" };
+            List<string> list3 = new List<string>() { "Words" };
+            List<string> list4 = new List<string>() { "For", "Emphasis" };
+            List<List<string>> listOfLists = new List<List<string>>() { list1, list2, list3, list4 };
 
-        //OverLoad Operator Tests
+            // Arrange
+            string expected = "I. Love. Putting. Periods. Between. Words. For. Emphasis";
+            string result;
+
+            // Act
+            result = listOfLists.ToString();
+
+            // Assert
+            Assert.AreEqual(expected, result);
+        }
+
+
+
+        //OverLoad + Operator Tests
+
 
 
         [TestMethod]
@@ -393,6 +421,12 @@ namespace CustomListTests
                 Assert.AreEqual(result[i], expected[i]);
             }
         }
+
+
+
+        //OverLoad - Operator Tests
+
+
 
         [TestMethod]
         public void Operator_SubtractOneListsItemsIfTheyArePresentInSecondList_ReturnExpectedCountOfNewList()
@@ -512,10 +546,258 @@ namespace CustomListTests
             }
         }
 
+        [TestMethod]
+        public void Zip_ZipTogetherTwoStringLists_ReturnExpectedList()
+        {
+            List<string> love = new List<string>() { "You", "love", "they", "THE" };
+            List<string> tacos = new List<string>() { "gotta", "tacos", "are", "best" };
+            List<string> expected = new List<string>() { "You", "gotta", "love", "tacos", "they", "are", "THE", "best" };
+            // Arrange
+            List<string> result;
+
+            // Act
+            result = love.Zip(tacos);
+
+            // Assert
+            for (int i = 0; i < expected.Count; i++)
+            {
+                Assert.AreEqual(result[i], expected[i]);
+            }
+        }
+
+        [TestMethod]
+        public void Zip_ZipTogetherOneListWithAnotherEmptyList_ReturnExpectedEmptyList()
+        {
+            // Arrange
+            List<int> odd = new List<int>() { 1, 3, 5 };
+            List<int> empty = new List<int>();
+            List<int> expected = new List<int>();
+            List<int> result;
+
+            // Act
+            result = odd.Zip(empty);
+
+            // Assert
+            for (int i = 0; i < expected.Count; i++)
+            {
+                Assert.AreEqual(result[i], expected[i]);
+            }
+        }
 
 
+
+        //SortAscending Tests
+
+
+
+        [TestMethod]
+        public void SortAscending_SortTheIntListInAscendingOrder_MakeSureListIsInExpectedOrder()
+        {
+            // Arrange
+            List<int> list = new List<int> { 4, 6, 4, 2, 8, 5, 9, 0, 1, 2 };
+            List<int> expected = new List<int> { 0, 1, 2, 2, 4, 4, 5, 6, 8, 9 };
+
+            // Act
+            list.SortAscending();
+
+            // Assert
+            for (int i = 0; i < list.Count; i++)
+            {
+                Assert.AreEqual(expected[i], list[i]);
+            }
+        }
+
+        [TestMethod]
+        public void SortAscending_SortTheIntListInAscendingOrderWithDoubleDigits_MakeSureReturnListIsInExpectedOrder()
+        {
+            // Arrange
+            List<int> list = new List<int> { 24, 20, 33, 19, 22 };
+            List<int> expected = new List<int> { 19, 20, 22, 24, 33 };
+
+            // Act
+            list.SortAscending();
+
+            // Assert
+            for (int i = 0; i < list.Count; i++)
+            {
+                Assert.AreEqual(expected[i], list[i]);
+            }
+        }
+
+        [TestMethod]
+        public void SortAscending_SortTheStringListInAscendingOrder_MakeSureReturnListIsInExpectedOrder()
+        {
+            // Arrange
+            List<string> list = new List<string> { "g", "d", "c", "f", "a", "e", "b" };
+            List<string> expected = new List<string> { "a", "b", "c", "d", "e", "f", "g" };
+
+            // Act
+            list.SortAscending();
+
+            // Assert
+            for (int i = 0; i < list.Count; i++)
+            {
+                Assert.AreEqual(expected[i], list[i]);
+            }
+        }
+
+        [TestMethod]
+        public void SortAscending_SortTheStringOfWordsListInAscendingOrder_MakeSureReturnListIsInExpectedOrder()
+        {
+            // Arrange
+            List<string> list = new List<string> { "github", "zaza", "door", "apple", "douchebag", "ape" };
+            List<string> expected = new List<string> { "ape", "apple", "door", "douchebag", "github", "zaza" };
+
+            // Act
+            list.SortAscending();
+
+            // Assert
+            for (int i = 0; i < list.Count; i++)
+            {
+                Assert.AreEqual(expected[i], list[i]);
+            }
+        }
+
+
+
+        //SortDescending Tests
+
+
+
+        [TestMethod]
+        public void SortDescending_SortTheIntListInDescendingOrder_MakeSureReturnListIsInExpectedOrder()
+        {
+            // Arrange
+            List<int> list = new List<int> { 4, 6, 4, 2, 8, 5, 9, 0, 1, 2 };
+            List<int> expected = new List<int> { 9, 8, 6, 5, 4, 4, 2, 2, 1, 0, };
+
+            // Act
+            list.SortDescending();
+
+            // Assert
+            for (int i = 0; i < list.Count; i++)
+            {
+                Assert.AreEqual(expected[i], list[i]);
+            }
+        }
+
+        [TestMethod]
+        public void SortDescending_SortTheIntListInDescendingOrderWithDoubleDigits_MakeSureReturnListIsInExpectedOrder()
+        {
+            // Arrange
+            List<int> list = new List<int> { 24, 20, 33, 19, 22 };
+            List<int> expected = new List<int> { 33, 24, 22, 20, 19 };
+
+            // Act
+            list.SortDescending();
+
+            // Assert
+            for (int i = 0; i < list.Count; i++)
+            {
+                Assert.AreEqual(expected[i], list[i]);
+            }
+        }
+
+        [TestMethod]
+        public void SortDescending_SortTheStringListInDescendingOrder_MakeSureReturnListIsInExpectedOrder()
+        {
+            // Arrange
+            List<string> list = new List<string> { "d", "g", "c", "f", "a", "e", "b" };
+            List<string> expected = new List<string> { "g", "f", "e", "d", "c", "b", "a" };
+
+            // Act
+            list.SortDescending();
+
+            // Assert
+            for (int i = 0; i < list.Count; i++)
+            {
+                Assert.AreEqual(expected[i], list[i]);
+            }
+        }
+
+        [TestMethod]
+        public void SortDescending_SortTheStringOfWordsListInDescendingOrder_MakeSureReturnListIsInExpectedOrder()
+        {
+            // Arrange
+            List<string> list = new List<string> { "github", "zaza", "door", "apple", "douchebag", "ape" };
+            List<string> expected = new List<string> { "zaza", "github", "douchebag", "door", "apple", "ape" };
+
+            // Act
+            list.SortDescending();
+
+            // Assert
+            for (int i = 0; i < list.Count; i++)
+            {
+                Assert.AreEqual(expected[i], list[i]);
+            }
+        }
+
+
+
+        //Other Methods Needed Tests
+
+
+
+        [TestMethod]
+        public void FindIfListWithLengthOfOneHasItemWeAreLookingFor_ListDoesntHaveIt_ReturnFalse()
+        {
+            List<int> list = new List<int>() { 10 };
+            // Arrange
+            int item = 5;
+            bool result;
+
+            // Act
+            result = list.FindIfListWithLengthOfOneHasItemWeAreLookingFor(item);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+        
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void CheckTheIndex_NotSatisfyFunction_ExpectNewArgumentException()
+        {
+            List<int> list = new List<int>() { 1, 2, 3, 4, 5 };
+            //Arrange
+            int i = 6;
+            int result;
+
+            //Act
+            result = list.CheckTheIndex(i);
+
+            //Assert 
+        }
+
+        [TestMethod]
+        public void ConvertItemToString_ConvertListItemToString_ReturnIntZeroForItemsBeingEqual()
+        {
+            //Arrange
+            List<int> list1 = new List<int>() { 10 };
+            List<int> list2 = new List<int>() { 10 };
+            int expected = 0;
+            int result;
+
+            //Act
+            result = list1.ConvertItemToString(list1[0], list2[0]);
+
+            //Assert
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void ConvertItemToString_ConvertListItemToString_ReturnIntNegativeOneForItemsBeingEqual()
+        {
+            //Arrange
+            List<int> list1 = new List<int>() { 10 };
+            List<int> list2 = new List<int>() { 5 };
+            int expected = -1;
+            int result;
+
+            //Act
+            result = list1.ConvertItemToString(list1[0], list2[0]);
+
+            //Assert
+            Assert.AreEqual(expected, result);
+        }
     }
 }
-
-
-    

@@ -57,7 +57,9 @@ namespace CustomList
         }
 
 
+
         //Mandatory Methods
+
 
 
         public int Count
@@ -113,9 +115,9 @@ namespace CustomList
 
             for (int i = 0; i < length; i++)
             {
-                builtString.Append(innerArray[i]);
+                builtString.Append(innerArray[i].ToString());
 
-                if (i != length - 1)
+                if (i != (length - 1))
                 {
                     builtString.Append(". ");
                 }
@@ -173,33 +175,56 @@ namespace CustomList
         }
 
 
+
         //Bonus Sort Methods
+
 
 
         public void SortAscending()
         {
-            for(int i = 0; i < length; i++)
+            bool smallerThanNext = true;
+            for(int i = 0; i <= (length - 1) && smallerThanNext; i++)
             {
-                for(int j = 0; j < length; j++)
+                smallerThanNext = false;
+                for (int j = 0; j < (length - 1); j++)
                 {
-
+                    if (ConvertItemToString(innerArray[j], innerArray[j + 1]) > 0)
+                    {
+                        T temporaryHolder = innerArray[j];
+                        innerArray[j] = innerArray[j + 1];
+                        innerArray[j + 1] = temporaryHolder;
+                        smallerThanNext = true;
+                    }
                 }
             }
         }
 
-        public int CompareLength(T list1, T list2)
+        public void SortDescending()
         {
-            string item1 = Convert.ToString(list1);
-            string item2 = Convert.ToString(list2);
-            int result = item1.Length.CompareTo(item2.Length);
-            return result;
+            bool largerThanNext = true;
+            for (int i = 0; i <= (length - 1) && largerThanNext; i++)
+            {
+                largerThanNext = false;
+                for (int j = 0; j < (length - 1); j++)
+                {
+                    if (ConvertItemToString(innerArray[j], innerArray[j + 1]) < 0)
+                    {
+                        T temporaryHolder = innerArray[j];
+                        innerArray[j] = innerArray[j + 1];
+                        innerArray[j + 1] = temporaryHolder;
+                        largerThanNext = true;
+                    }
+                }
+            }
         }
 
 
 
-        //Other Methods needed
+        //Other Methods Needed
 
-        public void SetNewListAfterRemovedItemFound(int i, T[] newInnerArray)
+
+
+        private void SetNewListAfterRemovedItemFound(int i, T[] newInnerArray)
         {
             for (int j = i; j < length; j++)
             {
@@ -207,7 +232,7 @@ namespace CustomList
             }
         }
 
-        public bool FindIfListToBeRemovedHasOnlyOneItemInIt(bool trueOrFalse, T[] newInnerArray, T[] innerArray, T item)
+        private bool FindIfListToBeRemovedHasOnlyOneItemInIt(bool trueOrFalse, T[] newInnerArray, T[] innerArray, T item)
         {
             trueOrFalse = FindIfListWithLengthOfOneHasItemWeAreLookingFor(item);
             if (length == 1 && trueOrFalse == true)
@@ -231,7 +256,7 @@ namespace CustomList
             }
         }
 
-        public bool FindEqualItem(T item, int i)
+        private bool FindEqualItem(T item, int i)
         {
 
             if (innerArray[i].Equals(item))
@@ -256,7 +281,18 @@ namespace CustomList
             }
         }
 
+        public int ConvertItemToString(T listItem1, T listItem2)
+        {
+            string item1 = Convert.ToString(listItem1);
+            string item2 = Convert.ToString(listItem2);
+            int result = CompareStringSizes(item1, item2);
+            return result;
+        }
 
-
+        private int CompareStringSizes(string item1, string item2)
+        {
+            int result = item1.CompareTo(item2);
+            return result;
+        }
     }
 }
